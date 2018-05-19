@@ -7,6 +7,8 @@ import 'package:google_maps/google_maps.dart';
 
 GMap googleMap;
 
+var markerList=[];
+
 void main() {
  fb.initializeApp(
     apiKey: "AIzaSyDLcSXnz9AWjfCixVxgHqW7fBVdgiRvzH4",
@@ -76,13 +78,18 @@ for (var key in latlong.keys){
   if (key == 'long')long = latlong[key];
 }
 
-print(latlong);
-print(lat);
-print(long);
-
 _PlaceMarker(lat,long);
   
 }
+
+
+_DeleteMarker(Marker mrkr){
+
+  markerList.remove(mrkr);
+  mrkr.map=null;
+
+}
+
 
 _PlaceMarker(lat,long){
 
@@ -93,4 +100,13 @@ final marker = new Marker(new MarkerOptions()
     ..map = googleMap
 ..position = googleMap.center);
 
+marker.onClick.listen((MouseEvent event){
+  _DeleteMarker(marker);
+});
+
+markerList.add(marker);
+
+
 }
+
+//>pub serve --port=9080
